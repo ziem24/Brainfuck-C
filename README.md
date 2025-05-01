@@ -1,13 +1,10 @@
 ## brainfuck-C
 ##### Ziemcorp Interactive COPYRIGHT ©2025
 ---
-This is literally a brainfuck interpreter in C.
-
-The greatest achievement in the history of achievements, maybe ever.
-
-Size of the program is still **above** 10 bytes. <ins>We are learning.</ins>
-
-For all esolang extremists: the best thing I could do is this 700 byte version (if you ignore the newlines)
+- This is literally a brainfuck interpreter in C.
+- The greatest achievement in the history of achievements, maybe ever.
+- Size of the program is still **above** 10 bytes. <ins>We are learning.</ins>
+- For all esolang extremists: the best thing I could do is this 700 byte version (if you ignore the newlines)
 ```c
 #include <stdio.h>
 #include <stdlib.h>
@@ -34,23 +31,26 @@ cd path/to/repository
 make
 ./main "path/to/file"
 ```
+
 #### 2. Debugging
-Imagine a simple brainfuck script:
+Placing a hashtag in any place like this:
 ```brainfuck
 "examples/xkcd_random_number.bf"
 +++++[>++++++++++<-]>++.#  ; appended symbol
 ```
-Placing a # in any place will print out some information about the current situation:
+will print out some useful information (instruction/data pointer location, cell value)
 ```bash
 ./main "examples/xkcd_random_number.bf"
 4 (output)
 Instruction . at position 79
 Cell value '4' (ASCII 52) at pointer value 1
 ```
+which means that the comments or anything else should not contain hashtags!!!
+
 #### 3. Examples
 Programs I have written and put in the *examples* folder
 1. Hello world - Everyone knows what a Hello world program does
-2. Truth machine - Print a single '0' if input is '0', print '1' indefinitely if input is 1
+2. Truth machine - Print a single '0' if input is '0', print '1' indefinitely if the input is '1'
 3. XKCD random number - Return '4', based on XKCD page 221
 #### 4. Windows support
 Thinking about it.
