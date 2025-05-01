@@ -1,20 +1,32 @@
-// >	Increment the data pointer by one.
-// <	Decrement the data pointer by one.
-// +	Increment the byte at the data pointer by one.
-// -	Decrement the byte at the data pointer by one.
-// .	Output the byte at the data pointer.
-// ,	Accept one byte of input, storing its value in the byte at the data pointer.
-// [	If the byte at the data pointer is zero, then jump it forward to the command after the matching ] command.
-// ]  If the byte at the data pointer is nonzero, then jump it back to the command after the matching [ command.
-// #  Debugging method to print the data pointer location and the byte at the data pointer
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#define BUFFER_SIZE 256
 
-int findRightBracket(char* code, int leftBracketPos) {
+char* readFile(char* filename) {
+
+  FILE *file = fopen(filename, "r");
+  if (file == NULL) {
+    printf("Error: Could not read file \"%s\"\n", filename);
+    return NULL;
+  }
+
+  fseek(file, 0L, SEEK_END);
+  char* script = malloc(ftell(file) + 1);
+  rewind(file);
+
+  int currentChar, i = 0;
+  while ((currentChar = fgetc(file)) != EOF) {
+    script[i] = currentChar;
+    i++;
+  }
+  fclose(file);
+  return script;
+}
+
+int getRightBracket(char* code, int leftBracketPos) {
   int weight = 1, indx = leftBracketPos;
-  while(indx < strlen(code) && weight > 0) {
+  while(indx <= strlen(code) && weight > 0) {
     indx++;
     if (code[indx] == ']') { weight--; }
     else if (code[indx] == '[') { weight++; }
@@ -22,9 +34,9 @@ int findRightBracket(char* code, int leftBracketPos) {
   return indx;
 }
 
-int findLeftBracket(char* code, int rightBracketPos) {
+int getLeftBracket(char* code, int rightBracketPos) {
   int weight = 1, indx = rightBracketPos;
-  while(indx > 0 && weight > 0) {
+  while(indx >= 0 && weight > 0) {
     indx--;
     if (code[indx] == '[') { weight--; }
     else if (code[indx] == ']') { weight++; }
@@ -37,62 +49,66 @@ int main(int argc, char* argv[]) {
     printf("Wrong arguments, usage: ./main <code>\n");
     return 1;
   }
-  int buf[256], ptr = 127, instr = 0;
-  for(int i=0; i<256; i++) { buf[i] = 0; }
+  unsigned buffer[BUFFER_SIZE], ptr = (BUFFER_SIZE-1)/2, instr_ptr = 0;
+  for(int i=0; i<BUFFER_SIZE; i++) { buffer[i] = 0; }
+  char* script = readFile(argv[1]);
+  if (script == NULL) { return 2; }
 
-  for(int instr=0; instr<strlen(argv[1]); instr++) {
-    switch (argv[1][instr]) {
+
+  while(instr_ptr < strlen(script)) {
+    switch (script[instr_ptr]) {
       case '>': {
         ptr++;
-        if (ptr > 255) {
-          printf("Pointer out of range (>255)\n");
-          return 2;
-        }
         break;
       }
       case '<': {
         ptr--;
-        if (ptr < 0) {
-          printf("Pointer out of range (<0)\n");
-          return 2;
-        }
         break;
       }
       case '+': {
-        buf[ptr] = (buf[ptr] + 1) % 256;
+        buffer[ptr] = (buffer[ptr] + 1) % BUFFER_SIZE;
         break;
       }
       case '-': {
-        buf[ptr]--;
-        if (buf[ptr] < 0) { buf[ptr] = 255; }
+        buffer[ptr] = (buffer[ptr] - 1) % BUFFER_SIZE;
         break;
       }
       case ',': {
-        buf[ptr] = getchar();
+        buffer[ptr] = getchar();
         break;
       }
       case '.': {
-        printf("%c", buf[ptr]);
+        putchar(buffer[ptr]);
         break;
       }
       case '[': {
-        if (buf[ptr] == 0) { instr = findRightBracket(argv[1], instr); }
+        if (buffer[ptr] == 0) { instr_ptr = getRightBracket(script, instr_ptr); }
         break;
       }
       case ']': {
-        if (buf[ptr] != 0) { instr = findLeftBracket(argv[1], instr); }
+        if (buffer[ptr] != 0) { instr_ptr = getLeftBracket(script, instr_ptr); }
         break;
       }
       case '#': {
-        printf("\nInstruction %c at position %d\n", argv[1][instr - 1], instr - 1);
-        printf("Cell value %d at pointer value %d\n", buf[ptr], ptr - 127);
+        printf("\nInstruction %c at position %d\n", script[instr_ptr - 1], instr_ptr - 1);
+        printf("Cell value '%c' (ASCII %d) at pointer value %d\n", buffer[ptr], buffer[ptr], ptr - (BUFFER_SIZE - 1)/2);
         break;
       }
       default : {
         break;
       }
     }
+    if (instr_ptr < 0 || instr_ptr > strlen(script)) {
+      printf("Program counter out of range (%d)\n", instr_ptr);
+      return 3;
+    }
+    if (ptr < 0 || ptr > BUFFER_SIZE) {
+      printf("Pointer out of range (%d)\n", ptr);
+      return 4;
+    }
+    instr_ptr++;
   }
   printf("\n");
+  free(script);
   return 0;
 }
