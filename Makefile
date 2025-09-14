@@ -1,12 +1,11 @@
 CC = gcc
-CFILES = interpreter.c
-OBJECTS = interpreter.o
+NAME = main
 
-main: $(OBJECTS)
-	gcc -o main $(OBJECTS)
+main: main.o
+	$(CC) -o main main.o
 
-interpreter.o: $(CFILES)
-	gcc -c -o $(OBJECTS) $(CFILES)
+main.o: $(NAME).c
+	$(CC) -c -o main.o $(NAME).c
 
 clean:
-	rm main $(OBJECTS)
+	rm main *.o

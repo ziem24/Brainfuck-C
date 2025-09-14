@@ -1,0 +1,3 @@
+#include<stdio.h>
+#define B break;
+main(int argc,char**argv){int l=30000,p=0,i=0,w;unsigned char b[l],*a=argv[1];for(int i=0;i<l;i++)b[i]=0;while(a[i]){switch(a[i]){case'>':{p++;B;}case'<':{p--;B;}case'+':{b[p]++;B;}case'-':{b[p]--;B;}case',':{b[p]=getchar();B;}case'.':{putchar(b[p]);B;}case'[':{if(!b[p]){w=1;while(w){i++;if(a[i]==93)w--;if(a[i]==91)w++;}}B;}case']':{if(b[p]){w=1;while(w){i--;if(a[i]==91)w--;if(a[i]==93)w++;}}B;}}i++;}}
