@@ -6,6 +6,7 @@ int main(int argc, char** argv) {
   for (int i = 0; i < length; i++) data[i] = 0;
 
   while (code[pc]) {
+    w=1;
     switch(code[pc]) {
       case '>' : { ptr++; break; }
       case '<' : { ptr--; break; }
@@ -14,24 +15,16 @@ int main(int argc, char** argv) {
       case ',' : { data[ptr] = getchar(); break; }
       case '.' : { putchar(data[ptr]); break; }
       case '[' : {
-        if (!data[ptr]) {
-          w = 1;
-          while (w) {
+        while (w) {
             pc++;
-            if (code[pc] == ']') w--;
-            if (code[pc] == '[') w++;
-          }
+            w += (code[pc] == '[') - (code[pc] == ']');
         }
-        break;
+        pc--; break;
       }
       case ']' : {
-        if (data[ptr]) {
-          w = 1;
-          while (w) {
+        while (data[ptr] && w) {
             pc--;
-            if (code[pc] == '[') w--;
-            if (code[pc] == ']') w++;
-          }
+            w += (code[pc] == ']') - (code[pc] == '[');
         }
         break;
       }
