@@ -1,3 +1,3 @@
 #include<stdio.h>
 #define B break;
-main(int argc,char**argv){int l=30000,p=0,i=0,w;unsigned char b[l],*a=argv[1];for(int i=0;i<l;i++)b[i]=0;while(a[i]){switch(a[i]){case'>':{p++;B;}case'<':{p--;B;}case'+':{b[p]++;B;}case'-':{b[p]--;B;}case',':{b[p]=getchar();B;}case'.':{putchar(b[p]);B;}case'[':{if(!b[p]){w=1;while(w){i++;if(a[i]==93)w--;if(a[i]==91)w++;}}B;}case']':{if(b[p]){w=1;while(w){i--;if(a[i]==91)w--;if(a[i]==93)w++;}}B;}}i++;}}
+main(int argc,char**argv){int l=30000,p=0,i=0,w;unsigned char b[l],*a=argv[1];for(int i=0;i<l;i++)b[i]=0;while(a[i]){w=1;switch(a[i]){case'>':{p++;B;}case'<':{p--;B;}case'+':{b[p]++;B;}case'-':{b[p]--;B;}case',':{b[p]=getchar();B;}case'.':{putchar(b[p]);B;}case'[':{while(w){i++;w+=(a[i]==91)-(a[i]==93);}i--;B;}case']':{while(b[p]&&w){i--;w+=(a[i]==93)-(a[i]==91);}B;}}i++;}}

@@ -7,9 +7,9 @@ The greatest achievement in the history of achievements, maybe ever.
 
 Size of the program is still **above** 10 bytes. <ins>We are learning.</ins>
 
-For all esolang extremists: the best thing I could do is this 440 byte version (if you ignore the newlines).
-This version has exceptions handled by the operating system among many other cutting-~~edge~~corner technologies.
-If you run some faulty code on a PDP-8 or other old thing it may just nuke your computer.
+For all esolang extremists: the best thing I could do is this 411 byte version (if you ignore the newlines and indents).
+This version has exceptions handled by the operating system among many other cutting-~~corner~~edge technologies.
+If you run faulty code on a PDP-8 or some other old thing it may just nuke your computer.
 ```c
 #include<stdio.h>
 #define B break;
@@ -18,6 +18,7 @@ main(int argc,char**argv){
   unsigned char b[l],*a=argv[1];
   for(int i=0;i<l;i++)b[i]=0;
   while(a[i]){
+    w=1;
     switch(a[i]){
       case'>':{p++;B;}
       case'<':{p--;B;}
@@ -25,9 +26,12 @@ main(int argc,char**argv){
       case'-':{b[p]--;B;}
       case',':{b[p]=getchar();B;}
       case'.':{putchar(b[p]);B;}
-      case'[':{if(!b[p]){w=1;while(w){i++;if(a[i]==93)w--;if(a[i]==91)w++;}}B;}
-      case']':{if(b[p]){w=1;while(w){i--;if(a[i]==91)w--;if(a[i]==93)w++;}}B;}
-    }i++;}}
+      case'[':{while(w){i++;w+=(a[i]==91)-(a[i]==93);}i--;B;}
+      case']':{while(b[p]&&w){i--;w+=(a[i]==93)-(a[i]==91);}B;}
+    }
+  i++;
+  }
+}
 ```
 
 ---
@@ -50,7 +54,7 @@ will print out some useful information (instruction/data pointer location, cell 
 ./main "examples/xkcd_random_number.bf"
 4 (output)
 Instruction . at position 79
-Cell value '4' (ASCII 52) at pointer value 1
+Cell value '4' (52) at pointer value 1
 ```
 which means that the comments or anything else should not contain hashtags!!!
 
