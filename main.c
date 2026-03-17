@@ -2,8 +2,8 @@
 #include <stdlib.h>
 
 #define BUFFER_SIZE 30000
-#define LEFT  -1
-#define RIGHT  1
+#define LEFT    -1
+#define RIGHT    1
 
 char* readFile(const char* filename) {
   FILE *file = fopen(filename, "r");
@@ -42,7 +42,7 @@ int main(int argc, char* argv[]) {
     printf("Wrong arguments, usage: ./main <code>\n");
     return 1;
   }
-  unsigned char buffer[BUFFER_SIZE];
+  char buffer[BUFFER_SIZE];
   int ptr = 0, instr_ptr = 0;
   for (int i = 0; i < BUFFER_SIZE; i++) { buffer[i] = 0; }
   char* code = readFile(argv[1]);
@@ -52,15 +52,14 @@ int main(int argc, char* argv[]) {
     switch (code[instr_ptr]) {
       case '>' : { ptr++; break; }
       case '<' : { ptr--; break; }
-      case '+' : { buffer[ptr]++; break; }
-      case '-' : { buffer[ptr]--; break; }
-      case ',' : { buffer[ptr] = getchar(); break; }
-      case '.' : { putchar(buffer[ptr]); break; }
+      case '^' : { buffer[ptr] ^= 1; break; }
+      case ',' : { buffer[ptr] = (getchar() & 1); break; }
+      case '.' : { printf("%d", buffer[ptr]); break; }
       case '[' : { if (buffer[ptr] == '\0') findMatchingBracket(code, &instr_ptr, RIGHT); break; }
       case ']' : { if (buffer[ptr] != '\0') findMatchingBracket(code, &instr_ptr,  LEFT); break; }
       case '#' : {
         printf("\nInstruction %c at position %d\n", code[instr_ptr - 1], instr_ptr - 1);
-        printf("Cell value '%c' (%d) at pointer value %d\n", buffer[ptr], (int)buffer[ptr], ptr);
+        printf("Cell value %d at pointer value %d\n", buffer[ptr], ptr);
         break;
       }
       default : { break; }

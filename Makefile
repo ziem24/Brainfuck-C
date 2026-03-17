@@ -1,12 +1,11 @@
 CC = gcc
 CFLAGS = -Wall -Wextra
-NAME = main.c
 
 main: main.o
 	$(CC) $(CFLAGS) -o main main.o
 
-main.o: $(NAME)
-	$(CC) $(CFLAGS) -c -o main.o $(NAME)
+main.o: main.c
+	$(CC) $(CFLAGS) -c -o main.o main.c
 
 clean:
 	rm main *.o
