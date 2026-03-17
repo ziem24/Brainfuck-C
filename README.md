@@ -69,5 +69,7 @@ Programs I have written and put in the *examples* folder
 #### 4. small_interpreter.c and unreadable_interpreter.c
 Those are bonus interpreters using system arguments for code input. They are also meant to see how small can these interpreters get.
 They can be compiled using `make NAME=small_interpreter.c` or `make NAME=unreadable_interpreter.c`. The Brainfuck programs can be executed with the command `./main "piece of code"`.
+#### 6. Boolean edition
+Check out the branch `boolean` for more :D:D:D
 #### 5. Windows support
 Thinking about it.
