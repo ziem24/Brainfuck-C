@@ -34,6 +34,6 @@ which means that the comments or anything else should not contain hashtags!!!
 #### 3. Examples
 Programs I have written and put in the *examples* folder
 1. Truth machine - Print a single '0' if input is '0', print '1' indefinitely if the input is '1'
-2. XKCD random number - Return '4', based on XKCD page 221
+2. XKCD random number - Return '100' (binary 4), based on XKCD page 221
 3. If-else - An if-else statement
 4. Cat - A cat program that terminates on the first 0
