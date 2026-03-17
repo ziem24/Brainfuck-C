@@ -1,3 +1,3 @@
-// Cat program that terminates on EOF
+// Cat program that terminates on 0
 
-+[,.----------]
+^[,.]
