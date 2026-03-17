@@ -2,7 +2,7 @@
 
 int main(int argc, char** argv) {
   int length = 30000, ptr = 0, pc = 0, w;
-  unsigned char data[length], *code = argv[1];
+  unsigned char data[length], *code = (unsigned char*)argv[1];
   for (int i = 0; i < length; i++) data[i] = 0;
 
   while (code[pc]) {
